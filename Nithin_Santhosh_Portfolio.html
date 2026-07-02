@@ -342,11 +342,121 @@
     #chat-panel{right:16px;left:16px;width:auto;bottom:88px;}
     #chat-toggle{right:16px;bottom:16px;}
   }
+
+  /* Scroll Progress Bar */
+  .scroll-progress {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: var(--teal);
+    z-index: 100;
+    transition: width 0.1s ease;
+  }
+
+  /* Particles canvas */
+  #particles-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  /* Custom Cursor styles */
+  @media (hover: hover) and (pointer: fine) {
+    body {
+      cursor: none;
+    }
+    a, button, .project-card, .btn, .chip, #chat-toggle, #chat-close-btn, .chat-send, input {
+      cursor: none;
+    }
+    .custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      background-color: var(--teal);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, background-color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 8px var(--teal);
+    }
+    .custom-cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 32px;
+      height: 32px;
+      border: 1px dashed rgba(43, 110, 99, 0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, border-color 0.2s, border-style 0.2s;
+    }
+    .custom-cursor-coords {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: var(--teal);
+      opacity: 0.6;
+      white-space: nowrap;
+      margin-left: 20px;
+      margin-top: 10px;
+      transform: translate(0, -50%);
+      transition: color 0.2s;
+    }
+    body.cursor-hover .custom-cursor {
+      width: 12px;
+      height: 12px;
+      background-color: var(--ink);
+      box-shadow: 0 0 12px var(--ink);
+    }
+    body.cursor-hover .custom-cursor-ring {
+      width: 48px;
+      height: 48px;
+      border-color: rgba(20, 23, 28, 0.8);
+      border-style: solid;
+      animation: rotateRing 8s linear infinite;
+    }
+    body.cursor-hover .custom-cursor-coords {
+      color: var(--ink);
+    }
+  }
+  @keyframes rotateRing {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  /* Reveal animations */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
 </style>
 </head>
 <body>
+<canvas id="particles-canvas"></canvas>
 
 <nav>
+  <div class="scroll-progress" id="scroll-progress"></div>
   <div class="wrap">
     <div class="brand"><span></span></div>
     <ul>
@@ -380,48 +490,48 @@
   </div>
 </header>
 
-<section id="about">
+<section id="about" class="reveal">
   <div class="wrap">
     <div class="sec-head"><span class="tag">01</span><h2>About</h2></div>
     <p class="about-text">I'm a Computer Science &amp; Engineering (AI &amp; ML) student at <strong>K. S. Rangasamy College of Technology</strong>, currently in my fifth semester. My work sits at the intersection of <strong>Python, deep learning, and NLP</strong> — I like taking academic research and turning it into things that actually run: voice assistants, browser-automation tools, and computer-vision experiments. I'm most interested in roles where I can keep building applied AI systems and learn fast alongside experienced engineers.</p>
   </div>
 </section>
 
-<section id="skills">
+<section id="skills" class="reveal">
   <div class="wrap">
     <div class="sec-head"><span class="tag">02</span><h2>Skills</h2></div>
     <div class="skill-groups">
-      <div class="skill-group">
+      <div class="skill-group reveal reveal-delay-1">
         <h3>Languages</h3>
         <div class="tag-list">
           <span class="tag">Python</span><span class="tag">Java</span><span class="tag">C</span><span class="tag">JavaScript</span>
         </div>
       </div>
-      <div class="skill-group">
+      <div class="skill-group reveal reveal-delay-2">
         <h3>Web</h3>
         <div class="tag-list">
           <span class="tag">HTML</span><span class="tag">CSS</span>
         </div>
       </div>
-      <div class="skill-group">
+      <div class="skill-group reveal reveal-delay-3">
         <h3>AI / ML</h3>
         <div class="tag-list">
           <span class="tag">Machine Learning</span><span class="tag">Deep Learning</span><span class="tag">NLP</span><span class="tag">BERT</span><span class="tag">YOLO</span>
         </div>
       </div>
-      <div class="skill-group">
+      <div class="skill-group reveal reveal-delay-1">
         <h3>Frameworks</h3>
         <div class="tag-list">
           <span class="tag">TensorFlow</span><span class="tag">PyTorch</span><span class="tag">OpenCV</span>
         </div>
       </div>
-      <div class="skill-group">
+      <div class="skill-group reveal reveal-delay-2">
         <h3>Tools</h3>
         <div class="tag-list">
           <span class="tag">VS Code</span><span class="tag">Antigravity</span><span class="tag">Figma</span><span class="tag">Canva</span><span class="tag">Roboflow</span><span class="tag">Git</span><span class="tag">GitHub</span><span class="tag">Android Studio</span>
         </div>
       </div>
-      <div class="skill-group">
+      <div class="skill-group reveal reveal-delay-3">
         <h3>Database</h3>
         <div class="tag-list">
           <span class="tag">MySQL</span>
@@ -431,11 +541,11 @@
   </div>
 </section>
 
-<section id="projects">
+<section id="projects" class="reveal">
   <div class="wrap">
     <div class="sec-head"><span class="tag">03</span><h2>Projects</h2></div>
 
-    <div class="project-card">
+    <div class="project-card reveal reveal-delay-1">
       <div class="project-top">
         <h3>Sentinel Vision</h3>
       </div>
@@ -443,7 +553,7 @@
       <div class="stack-list"><span>Python</span><span>Computer Vision</span><span>YOLO</span></div>
     </div>
 
-    <div class="project-card">
+    <div class="project-card reveal reveal-delay-2">
       <div class="project-top">
         <h3>NLP-Based Voice Assistant</h3>
       </div>
@@ -451,7 +561,7 @@
       <div class="stack-list"><span>Python</span><span>NLP</span><span>Deep Learning</span></div>
     </div>
 
-    <div class="project-card">
+    <div class="project-card reveal reveal-delay-3">
       <div class="project-top">
         <h3>Browser Automation Interface</h3>
       </div>
@@ -462,16 +572,16 @@
   </div>
 </section>
 
-<section id="experience">
+<section id="experience" class="reveal">
   <div class="wrap">
     <div class="sec-head"><span class="tag">04</span><h2>Work Experience</h2></div>
     <div class="timeline">
-      <div class="t-item">
+      <div class="t-item reveal reveal-delay-1">
         <span class="t-year">2026 · Ongoing</span>
         <h3>Research Intern</h3>
         <p>IITM Pravartak Technologies</p>
       </div>
-      <div class="t-item">
+      <div class="t-item reveal reveal-delay-2">
         <span class="t-year">Jul – Sep 2025</span>
         <h3>Virtual Internship</h3>
         <p>AICTE · 3 months</p>
@@ -480,21 +590,21 @@
   </div>
 </section>
 
-<section id="education">
+<section id="education" class="reveal">
   <div class="wrap">
     <div class="sec-head"><span class="tag">05</span><h2>Education</h2></div>
     <div class="timeline">
-      <div class="t-item">
+      <div class="t-item reveal reveal-delay-1">
         <span class="t-year">2026 · Semester V</span>
         <h3>B.E. — Computer Science &amp; Engineering (AI &amp; ML)</h3>
         <p>K. S. Rangasamy College of Technology · SGPA 7.56/10</p>
       </div>
-      <div class="t-item">
+      <div class="t-item reveal reveal-delay-2">
         <span class="t-year">2024</span>
         <h3>Higher Secondary (HSC)</h3>
         <p>J K K Nattraja Matric Higher Secondary School, Namakkal · 71%</p>
       </div>
-      <div class="t-item">
+      <div class="t-item reveal reveal-delay-3">
         <span class="t-year">2022</span>
         <h3>Secondary Education</h3>
         <p>Kalaimagal Vidhyashram Matric Higher Secondary School, Salem · 71%</p>
@@ -503,19 +613,19 @@
   </div>
 </section>
 
-<section id="certifications">
+<section id="certifications" class="reveal">
   <div class="wrap">
     <div class="sec-head"><span class="tag">06</span><h2>Certifications &amp; Achievements</h2></div>
     <div class="cert-list">
-      <div class="cert-item"><span>AI for Good (Hackathon) — NSCIF</span><span class="cert-year">2026</span></div>
-      <div class="cert-item"><span>Introduction to Industry 4.0 &amp; Industrial IoT — NPTEL</span><span class="cert-year">2025</span></div>
-      <div class="cert-item"><span>Meta Ads 101 Workshop — Guvi</span><span class="cert-year">2025</span></div>
-      <div class="cert-item"><span>Google Virtual Internship (Online) — AICTE</span><span class="cert-year">2025</span></div>
+      <div class="cert-item reveal reveal-delay-1"><span>AI for Good (Hackathon) — NSCIF</span><span class="cert-year">2026</span></div>
+      <div class="cert-item reveal reveal-delay-2"><span>Introduction to Industry 4.0 &amp; Industrial IoT — NPTEL</span><span class="cert-year">2025</span></div>
+      <div class="cert-item reveal reveal-delay-3"><span>Meta Ads 101 Workshop — Guvi</span><span class="cert-year">2025</span></div>
+      <div class="cert-item reveal reveal-delay-4"><span>Google Virtual Internship (Online) — AICTE</span><span class="cert-year">2025</span></div>
     </div>
   </div>
 </section>
 
-<footer id="contact">
+<footer id="contact" class="reveal">
   <div class="wrap">
     <div class="sec-head"><span class="tag">07</span><h2>Get in touch</h2></div>
     <p class="about-text" style="margin-bottom:28px;">Open to internships and entry-level roles in AI/ML engineering, applied NLP, and computer vision. Feel free to reach out.</p>
@@ -685,7 +795,209 @@
     chatPanel.classList.contains('open') ? closeChat() : openChat();
   });
   document.getElementById('chat-close-btn').addEventListener('click', closeChat);
+
+  // ---------- Scroll Progress Bar ----------
+  const scrollProgress = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', () => {
+    const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+    if (totalScroll > 0) {
+      const scrollPercent = (window.pageYOffset / totalScroll) * 100;
+      if (scrollProgress) {
+        scrollProgress.style.width = scrollPercent + '%';
+      }
+    }
+  });
+
+  // ---------- Scroll Reveal Intersection Observer ----------
+  const revealElements = document.querySelectorAll('.reveal');
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.05
+  };
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  revealElements.forEach(el => observer.observe(el));
+
+  // ---------- Custom Tech Cursor ----------
+  const cursor = document.getElementById('custom-cursor');
+  const cursorRing = document.getElementById('custom-cursor-ring');
+  const cursorCoords = document.getElementById('custom-cursor-coords');
+
+  let mouseX = 0, mouseY = 0;
+  let ringX = 0, ringY = 0;
+
+  window.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    if (cursor) {
+      cursor.style.left = mouseX + 'px';
+      cursor.style.top = mouseY + 'px';
+    }
+    if (cursorCoords) {
+      cursorCoords.style.left = mouseX + 'px';
+      cursorCoords.style.top = mouseY + 'px';
+      cursorCoords.textContent = `${mouseX.toFixed(0)}, ${mouseY.toFixed(0)}`;
+    }
+  });
+
+  function animateCursor() {
+    const ringLerp = 0.15;
+    ringX += (mouseX - ringX) * ringLerp;
+    ringY += (mouseY - ringY) * ringLerp;
+
+    if (cursorRing) {
+      cursorRing.style.left = ringX + 'px';
+      cursorRing.style.top = ringY + 'px';
+    }
+
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  // Add hover state to body when hovering over interactive elements
+  function updateInteractiveCursorListeners() {
+    const interactives = document.querySelectorAll('a, button, .project-card, .btn, .chip, #chat-toggle, #chat-close-btn, .chat-send, input');
+    interactives.forEach(el => {
+      el.removeEventListener('mouseenter', addCursorHover);
+      el.removeEventListener('mouseleave', removeCursorHover);
+      el.addEventListener('mouseenter', addCursorHover);
+      el.addEventListener('mouseleave', removeCursorHover);
+    });
+  }
+
+  function addCursorHover() {
+    document.body.classList.add('cursor-hover');
+  }
+
+  function removeCursorHover() {
+    document.body.classList.remove('cursor-hover');
+  }
+
+  updateInteractiveCursorListeners();
+
+  // Re-run listener binding when suggestions/chips are generated
+  const originalAppendChild = suggestionsEl.appendChild;
+  suggestionsEl.appendChild = function() {
+    const result = originalAppendChild.apply(this, arguments);
+    updateInteractiveCursorListeners();
+    return result;
+  };
+
+  // ---------- Interactive Particle Canvas ----------
+  const canvas = document.getElementById('particles-canvas');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.4;
+        this.vy = (Math.random() - 0.5) * 0.4;
+        this.radius = Math.random() * 1.2 + 0.4;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(43, 110, 99, 0.15)';
+        ctx.fill();
+      }
+    }
+
+    const particleCount = Math.min(60, Math.floor((width * height) / 20000));
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, width, height);
+      
+      // Draw grid lines
+      ctx.strokeStyle = 'rgba(43, 110, 99, 0.015)';
+      ctx.lineWidth = 1;
+      const gridSize = 100;
+      for (let x = 0; x < width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+
+      // Draw connections
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(43, 110, 99, ${0.08 * (1 - dist / 120)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+        
+        // Connect to mouse
+        const dxMouse = particles[i].x - mouseX;
+        const dyMouse = particles[i].y - mouseY;
+        const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+        if (distMouse < 180) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(mouseX, mouseY);
+          ctx.strokeStyle = `rgba(43, 110, 99, ${0.12 * (1 - distMouse / 180)})`;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+      }
+
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+  }
 </script>
+
+<!-- Custom cursor elements -->
+<div class="custom-cursor" id="custom-cursor"></div>
+<div class="custom-cursor-ring" id="custom-cursor-ring"></div>
+<div class="custom-cursor-coords" id="custom-cursor-coords"></div>
 
 </body>
 </html>
