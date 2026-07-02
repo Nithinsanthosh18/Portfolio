@@ -368,38 +368,44 @@
 
   /* Custom Cursor styles */
   @media (hover: hover) and (pointer: fine) {
-    body {
-      cursor: none;
-    }
-    a, button, .project-card, .btn, .chip, #chat-toggle, #chat-close-btn, .chat-send, input {
-      cursor: none;
-    }
     .custom-cursor {
       position: fixed;
       top: 0;
       left: 0;
-      width: 8px;
-      height: 8px;
-      background-color: var(--teal);
+      width: 22px;
+      height: 22px;
+      background-color: rgba(135, 206, 250, 0.4);
+      border: 1.5px solid rgba(135, 206, 250, 0.8);
       border-radius: 50%;
       pointer-events: none;
       z-index: 9999;
       transform: translate(-50%, -50%);
-      transition: width 0.2s, height 0.2s, background-color 0.2s, box-shadow 0.2s;
-      box-shadow: 0 0 8px var(--teal);
+      box-shadow: 0 0 10px rgba(135, 206, 250, 0.5), inset 0 0 6px rgba(255, 255, 255, 0.6);
+      animation: bubbleWobble 4s ease-in-out infinite alternate;
+      transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+    .custom-cursor::after {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
     }
     .custom-cursor-ring {
       position: fixed;
       top: 0;
       left: 0;
-      width: 32px;
-      height: 32px;
-      border: 1px dashed rgba(43, 110, 99, 0.4);
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(135, 206, 250, 0.3);
       border-radius: 50%;
       pointer-events: none;
       z-index: 9998;
       transform: translate(-50%, -50%);
-      transition: width 0.2s, height 0.2s, border-color 0.2s, border-style 0.2s;
+      transition: width 0.2s, height 0.2s, border-color 0.2s;
     }
     .custom-cursor-coords {
       position: fixed;
@@ -407,8 +413,8 @@
       z-index: 9998;
       font-family: 'JetBrains Mono', monospace;
       font-size: 8px;
-      color: var(--teal);
-      opacity: 0.6;
+      color: rgba(135, 206, 250, 0.8);
+      opacity: 0.8;
       white-space: nowrap;
       margin-left: 20px;
       margin-top: 10px;
@@ -416,25 +422,55 @@
       transition: color 0.2s;
     }
     body.cursor-hover .custom-cursor {
-      width: 12px;
-      height: 12px;
-      background-color: var(--ink);
-      box-shadow: 0 0 12px var(--ink);
+      width: 28px;
+      height: 28px;
+      background-color: rgba(135, 206, 250, 0.55);
+      border-color: rgba(135, 206, 250, 1);
+      box-shadow: 0 0 15px rgba(135, 206, 250, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.8);
     }
     body.cursor-hover .custom-cursor-ring {
-      width: 48px;
-      height: 48px;
-      border-color: rgba(20, 23, 28, 0.8);
-      border-style: solid;
-      animation: rotateRing 8s linear infinite;
+      width: 46px;
+      height: 46px;
+      border-color: rgba(135, 206, 250, 0.5);
     }
     body.cursor-hover .custom-cursor-coords {
-      color: var(--ink);
+      color: rgba(135, 206, 250, 1);
     }
   }
-  @keyframes rotateRing {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to { transform: translate(-50%, -50%) rotate(360deg); }
+
+  /* Bubble wobble animation */
+  @keyframes bubbleWobble {
+    0% { border-radius: 50% 50% 50% 50%; transform: translate(-50%, -50%) scale(1); }
+    33% { border-radius: 53% 47% 51% 49%; transform: translate(-50%, -50%) scale(1.02); }
+    66% { border-radius: 47% 53% 48% 52%; transform: translate(-50%, -50%) scale(0.98); }
+    100% { border-radius: 51% 49% 52% 48%; transform: translate(-50%, -50%) scale(1.01); }
+  }
+
+  /* Particle burst style */
+  .bubble-burst-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 10000;
+    background-color: rgba(135, 206, 250, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    box-shadow: 0 0 4px rgba(135, 206, 250, 0.5);
+    transform: translate(-50%, -50%);
+  }
+
+  /* Click ripple style */
+  .click-ripple {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9997;
+    border: 1.5px solid rgba(135, 206, 250, 0.6);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: clickRippleAnim 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+  }
+  @keyframes clickRippleAnim {
+    0% { width: 0px; height: 0px; opacity: 1; }
+    100% { width: 80px; height: 80px; opacity: 0; }
   }
 
   /* Reveal animations */
@@ -863,6 +899,81 @@
     requestAnimationFrame(animateCursor);
   }
   animateCursor();
+
+  // ---------- Bubble Blast on Click ----------
+  window.addEventListener('mousedown', e => {
+    createBubbleBlast(e.clientX, e.clientY);
+  });
+
+  function createBubbleBlast(x, y) {
+    // 1. Create a click ripple ring
+    const ripple = document.createElement('div');
+    ripple.className = 'click-ripple';
+    ripple.style.left = x + 'px';
+    ripple.style.top = y + 'px';
+    document.body.appendChild(ripple);
+    
+    // Automatically remove ripple after animation finishes
+    setTimeout(() => {
+      ripple.remove();
+    }, 600);
+
+    // 2. Spawn multiple bubble burst particles
+    const particleCount = 10;
+    for (let i = 0; i < particleCount; i++) {
+      const p = document.createElement('div');
+      p.className = 'bubble-burst-particle';
+      document.body.appendChild(p);
+
+      // Random sizes, angles, speeds
+      const size = Math.random() * 8 + 4; // 4px to 12px
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+
+      // Random starting coordinates slightly offset from center
+      const startAngle = Math.random() * Math.PI * 2;
+      const startDist = Math.random() * 5;
+      let px = x + Math.cos(startAngle) * startDist;
+      let py = y + Math.sin(startAngle) * startDist;
+      p.style.left = px + 'px';
+      p.style.top = py + 'px';
+
+      // Speed vectors
+      const angle = Math.random() * Math.PI * 2;
+      const speed = Math.random() * 3 + 1.5;
+      let vx = Math.cos(angle) * speed;
+      let vy = Math.sin(angle) * speed;
+      
+      let opacity = 1;
+      let scale = 1;
+
+      function update() {
+        px += vx;
+        py += vy;
+
+        // Apply friction
+        vx *= 0.96;
+        vy *= 0.96;
+
+        // Subtle gravity down
+        vy += 0.08;
+
+        opacity -= 0.025;
+        scale -= 0.02;
+
+        if (opacity <= 0 || scale <= 0) {
+          p.remove();
+        } else {
+          p.style.left = px + 'px';
+          p.style.top = py + 'px';
+          p.style.opacity = opacity;
+          p.style.transform = `translate(-50%, -50%) scale(${scale})`;
+          requestAnimationFrame(update);
+        }
+      }
+      requestAnimationFrame(update);
+    }
+  }
 
   // Add hover state to body when hovering over interactive elements
   function updateInteractiveCursorListeners() {
