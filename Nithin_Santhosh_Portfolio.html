@@ -372,40 +372,41 @@
       position: fixed;
       top: 0;
       left: 0;
-      width: 22px;
-      height: 22px;
-      background-color: rgba(135, 206, 250, 0.4);
-      border: 1.5px solid rgba(135, 206, 250, 0.8);
+      width: 6px;
+      height: 6px;
+      background-color: rgba(135, 206, 250, 0.95);
       border-radius: 50%;
       pointer-events: none;
       z-index: 9999;
       transform: translate(-50%, -50%);
-      box-shadow: 0 0 10px rgba(135, 206, 250, 0.5), inset 0 0 6px rgba(255, 255, 255, 0.6);
+      box-shadow: 0 0 6px rgba(135, 206, 250, 0.8);
+      transition: width 0.2s, height 0.2s, background-color 0.2s, box-shadow 0.2s;
+    }
+    .custom-cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 24px;
+      height: 24px;
+      background-color: rgba(135, 206, 250, 0.35);
+      border: 1.5px solid rgba(135, 206, 250, 0.7);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 10px rgba(135, 206, 250, 0.4), inset 0 0 6px rgba(255, 255, 255, 0.5);
       animation: bubbleWobble 4s ease-in-out infinite alternate;
       transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
     }
-    .custom-cursor::after {
+    .custom-cursor-ring::after {
       content: '';
       position: absolute;
       top: 4px;
       left: 4px;
       width: 5px;
       height: 5px;
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.85);
       border-radius: 50%;
-    }
-    .custom-cursor-ring {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 36px;
-      height: 36px;
-      border: 1px solid rgba(135, 206, 250, 0.3);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      transition: width 0.2s, height 0.2s, border-color 0.2s;
     }
     .custom-cursor-coords {
       position: fixed;
@@ -422,16 +423,17 @@
       transition: color 0.2s;
     }
     body.cursor-hover .custom-cursor {
-      width: 28px;
-      height: 28px;
-      background-color: rgba(135, 206, 250, 0.55);
-      border-color: rgba(135, 206, 250, 1);
-      box-shadow: 0 0 15px rgba(135, 206, 250, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.8);
+      width: 8px;
+      height: 8px;
+      background-color: rgba(135, 206, 250, 1);
+      box-shadow: 0 0 8px rgba(135, 206, 250, 1);
     }
     body.cursor-hover .custom-cursor-ring {
-      width: 46px;
-      height: 46px;
-      border-color: rgba(135, 206, 250, 0.5);
+      width: 38px;
+      height: 38px;
+      background-color: rgba(135, 206, 250, 0.5);
+      border-color: rgba(135, 206, 250, 0.9);
+      box-shadow: 0 0 15px rgba(135, 206, 250, 0.6), inset 0 0 8px rgba(255, 255, 255, 0.7);
     }
     body.cursor-hover .custom-cursor-coords {
       color: rgba(135, 206, 250, 1);
@@ -473,11 +475,13 @@
     100% { width: 80px; height: 80px; opacity: 0; }
   }
 
-  /* Reveal animations */
+  /* Reveal animations: Smooth fade-in on scroll */
   .reveal {
     opacity: 0;
     transform: translateY(30px);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+                transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: opacity, transform;
   }
   .reveal.revealed {
     opacity: 1;
@@ -848,8 +852,8 @@
   const revealElements = document.querySelectorAll('.reveal');
   const observerOptions = {
     root: null,
-    rootMargin: '0px',
-    threshold: 0.05
+    rootMargin: '0px 0px -15% 0px', // triggers when section is 15% inside the viewport
+    threshold: 0.1 // triggers when 10% of the section is visible
   };
 
   const observer = new IntersectionObserver((entries, observer) => {
@@ -1033,8 +1037,18 @@
       }
       draw() {
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(43, 110, 99, 0.15)';
+        const dxMouse = this.x - mouseX;
+        const dyMouse = this.y - mouseY;
+        const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+        let currentRadius = this.radius;
+        let currentOpacity = 0.15;
+        if (distMouse < 200) {
+          const factor = 1 - distMouse / 200;
+          currentRadius += 2.2 * factor;
+          currentOpacity += 0.35 * factor;
+        }
+        ctx.arc(this.x, this.y, currentRadius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(43, 110, 99, ${currentOpacity})`;
         ctx.fill();
       }
     }
@@ -1079,8 +1093,28 @@
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(43, 110, 99, ${0.08 * (1 - dist / 120)})`;
-            ctx.lineWidth = 0.5;
+            
+            // Check proximity of both particles to the mouse to boost line thickness
+            const dxMouseI = particles[i].x - mouseX;
+            const dyMouseI = particles[i].y - mouseY;
+            const distMouseI = Math.sqrt(dxMouseI * dxMouseI + dyMouseI * dyMouseI);
+            
+            const dxMouseJ = particles[j].x - mouseX;
+            const dyMouseJ = particles[j].y - mouseY;
+            const distMouseJ = Math.sqrt(dxMouseJ * dxMouseJ + dyMouseJ * dyMouseJ);
+            
+            const avgDistMouse = (distMouseI + distMouseJ) / 2;
+            let opacityFactor = 0.08;
+            let widthFactor = 0.5;
+            
+            if (avgDistMouse < 200) {
+              const proximity = 1 - avgDistMouse / 200;
+              opacityFactor += 0.22 * proximity;
+              widthFactor += 1.5 * proximity;
+            }
+            
+            ctx.strokeStyle = `rgba(43, 110, 99, ${opacityFactor * (1 - dist / 120)})`;
+            ctx.lineWidth = widthFactor * (1 - dist / 120);
             ctx.stroke();
           }
         }
@@ -1089,12 +1123,12 @@
         const dxMouse = particles[i].x - mouseX;
         const dyMouse = particles[i].y - mouseY;
         const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
-        if (distMouse < 180) {
+        if (distMouse < 200) {
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(mouseX, mouseY);
-          ctx.strokeStyle = `rgba(43, 110, 99, ${0.12 * (1 - distMouse / 180)})`;
-          ctx.lineWidth = 0.6;
+          ctx.strokeStyle = `rgba(43, 110, 99, ${0.35 * (1 - distMouse / 200)})`;
+          ctx.lineWidth = 1.8 * (1 - distMouse / 200);
           ctx.stroke();
         }
       }
