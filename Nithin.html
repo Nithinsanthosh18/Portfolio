@@ -1101,27 +1101,336 @@
             margin-top: 3rem;
         }
 
-        /* Mobile Responsiveness */
+        /* Mobile Header & Accessibility Navigation Styles */
+        .mobile-header {
+            display: none;
+        }
+
+        .sidebar-backdrop {
+            display: none;
+        }
+
+        .sidebar-close-mobile {
+            display: none;
+        }
+
+        /* Focus & High-Contrast Accessibility Outlines */
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        textarea:focus-visible {
+            outline: 2.5px solid var(--accent-purple) !important;
+            outline-offset: 3px !important;
+            border-radius: 8px;
+        }
+
+        /* Touch interaction tap feedback */
+        a, button, input, textarea, select {
+            -webkit-tap-highlight-color: rgba(109, 40, 217, 0.15);
+        }
+
         @media (max-width: 1024px) {
+            html, body {
+                overflow-x: hidden !important;
+                overflow-y: auto !important;
+                height: auto !important;
+                min-height: 100% !important;
+            }
+
+            .mobile-header {
+                display: flex;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 62px;
+                background: rgba(255, 255, 255, 0.96);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                border-bottom: 1px solid var(--card-border);
+                z-index: 1100;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 1.2rem;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            }
+
+            .mobile-brand {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                text-decoration: none;
+                color: #000000;
+            }
+
+            .mobile-hex-logo {
+                width: 38px;
+                height: 38px;
+                background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(99, 102, 241, 0.2));
+                border: 2px solid var(--accent-purple);
+                clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: 1.15rem;
+                font-weight: 800;
+                color: #000000;
+            }
+
+            .mobile-brand-title {
+                font-family: 'Space Grotesk', sans-serif;
+                font-size: 0.95rem;
+                font-weight: 700;
+                color: #000000;
+                line-height: 1.2;
+            }
+
+            .mobile-brand-sub {
+                font-size: 0.72rem;
+                color: var(--accent-purple);
+                font-weight: 600;
+            }
+
+            .mobile-hamburger-btn {
+                width: 44px;
+                height: 44px;
+                border-radius: 12px;
+                background: #ffffff;
+                border: 1.5px solid var(--card-border);
+                color: #000000;
+                font-size: 1.25rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+
+            .mobile-hamburger-btn:active,
+            .mobile-hamburger-btn:focus-visible {
+                border-color: var(--accent-purple);
+                background: #f8fafc;
+            }
+
+            .sidebar-backdrop {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.55);
+                backdrop-filter: blur(4px);
+                -webkit-backdrop-filter: blur(4px);
+                z-index: 1150;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+            }
+
+            .sidebar-backdrop.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
             .sidebar {
-                display: none;
+                position: fixed !important;
+                top: 0 !important;
+                bottom: 0 !important;
+                left: 0 !important;
+                width: 290px !important;
+                max-width: 85vw !important;
+                height: 100vh !important;
+                background: #ffffff !important;
+                z-index: 1200 !important;
+                transform: translateX(-100%) !important;
+                transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+                box-shadow: 15px 0 50px rgba(0, 0, 0, 0.18) !important;
+                border-right: 1px solid var(--card-border) !important;
+                padding: 1.5rem 1.2rem !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+                overflow-y: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0) !important;
+            }
+
+            .sidebar-close-mobile {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                width: 38px;
+                height: 38px;
+                border-radius: 50%;
+                background: #f1f5f9;
+                border: 1px solid var(--card-border);
+                color: #000000;
+                font-size: 1.1rem;
+                cursor: pointer;
             }
 
             .main-content {
-                margin-left: 0;
-                padding: 1.5rem 1.5rem 3rem;
+                margin-left: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important;
+                min-height: 100vh !important;
+                overflow-y: visible !important;
+                padding: 4.8rem 1rem 2.5rem 1rem !important;
+            }
+
+            .hero-section {
+                grid-template-columns: 1fr !important;
+                min-height: auto !important;
+                text-align: center !important;
+                gap: 2.2rem !important;
+                padding: 1.5rem 0 !important;
+            }
+
+            .hero-name {
+                font-size: clamp(2.2rem, 8vw, 3.4rem) !important;
+                line-height: 1.15 !important;
+            }
+
+            .hero-role {
+                font-size: clamp(1rem, 4vw, 1.25rem) !important;
+            }
+
+            .hero-desc {
+                font-size: 0.98rem !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
             }
 
             .hero-actions {
-                justify-content: center;
+                justify-content: center !important;
+                flex-direction: column !important;
+                width: 100% !important;
+                gap: 0.8rem !important;
+            }
+
+            .hero-actions a,
+            .hero-actions button {
+                width: 100% !important;
+                justify-content: center !important;
+                min-height: 48px !important;
+            }
+
+            .avatar-portal-wrap {
+                width: min(270px, 80vw) !important;
+                height: min(270px, 80vw) !important;
+                margin: 1rem auto 0 auto !important;
+            }
+
+            .avatar-circle {
+                width: 220px !important;
+                height: 220px !important;
+            }
+
+            .orbit-ring {
+                inset: -10px !important;
+            }
+
+            .orbit-ring-outer {
+                inset: -22px !important;
+            }
+
+            .orbit-chip {
+                font-size: 0.74rem !important;
+                padding: 0.35rem 0.8rem !important;
+            }
+
+            .chip-top-right { top: -8px !important; right: -8px !important; }
+            .chip-mid-left { top: 48% !important; left: -10px !important; }
+            .chip-bottom-right { bottom: -8px !important; right: -8px !important; }
+
+            .section-panel {
+                min-height: auto !important;
+                padding: 1.5rem 1.2rem !important;
+                margin: 1.2rem 0 !important;
+                border-radius: 20px !important;
+            }
+
+            .section-heading {
+                font-size: clamp(1.6rem, 6vw, 2.2rem) !important;
+                margin-bottom: 1.2rem !important;
             }
 
             .about-grid, .contact-layout-3col {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
+                gap: 1.5rem !important;
             }
 
-            .top-nav-links {
-                display: none;
+            .stats-grid-2x2 {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 0.8rem !important;
+            }
+
+            .skills-grid-circles {
+                grid-template-columns: repeat(auto-fit, minmax(85px, 1fr)) !important;
+                gap: 1rem 0.6rem !important;
+            }
+
+            .circle-icon-box {
+                width: 62px !important;
+                height: 62px !important;
+                font-size: 1.5rem !important;
+            }
+
+            .projects-grid-3 {
+                grid-template-columns: 1fr !important;
+                gap: 1.2rem !important;
+            }
+
+            .timeline-tube-container {
+                margin-top: 1.8rem !important;
+                overflow-x: auto !important;
+                padding: 1rem 0.4rem !important;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .timeline-horizontal {
+                grid-template-columns: repeat(5, minmax(130px, 1fr)) !important;
+                min-width: 660px !important;
+                gap: 1rem !important;
+            }
+
+            .modal-card-dark {
+                max-width: 96% !important;
+                max-height: 88vh !important;
+                padding: 1.5rem 1.2rem !important;
+                margin: 0.5rem !important;
+                border-radius: 22px !important;
+            }
+
+            .modal-close-btn {
+                top: 1rem !important;
+                right: 1rem !important;
+                width: 42px !important;
+                height: 42px !important;
+                font-size: 1.2rem !important;
+            }
+
+            footer {
+                flex-direction: column !important;
+                gap: 0.6rem !important;
+                text-align: center !important;
+                padding: 1.5rem 0 1rem !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid-2x2 {
+                grid-template-columns: 1fr !important;
+            }
+            .sidebar {
+                width: 100% !important;
+                max-width: 100% !important;
             }
         }
 
@@ -1132,7 +1441,7 @@
             }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 768px), (hover: none) {
             #custom-cursor-dot, #custom-cursor-ring {
                 display: none !important;
             }
@@ -1189,13 +1498,33 @@
     <div id="custom-cursor-dot"></div>
     <div id="custom-cursor-ring"></div>
 
+    <!-- Mobile Top Header Bar -->
+    <header class="mobile-header" aria-label="Mobile Navigation Header">
+        <a href="#home" class="mobile-brand" onclick="showSegment('home')" aria-label="Nithin Santhosh R Portfolio Home">
+            <div class="mobile-hex-logo">N</div>
+            <div>
+                <div class="mobile-brand-title">Nithin Santhosh R</div>
+                <div class="mobile-brand-sub">AI Engineer & ML Specialist</div>
+            </div>
+        </a>
+        <button class="mobile-hamburger-btn" id="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="sidebar-navigation" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars" id="hamburger-icon"></i>
+        </button>
+    </header>
+
+    <!-- Mobile Navigation Overlay Backdrop -->
+    <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleMobileMenu(false)" aria-hidden="true"></div>
+
     <!-- Ambient Grid & Glow Orbs -->
     <div class="ambient-grid"></div>
     <div class="ambient-orb orb-purple"></div>
     <div class="ambient-orb orb-cyan"></div>
 
     <!-- LEFT SIDEBAR HUD NAVBAR -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar-navigation" aria-label="Main Navigation">
+        <button class="sidebar-close-mobile" onclick="toggleMobileMenu(false)" aria-label="Close navigation menu">
+            <i class="fas fa-times"></i>
+        </button>
         <div>
             <div class="sidebar-header">
                 <div class="hexagon-logo">N</div>
@@ -1220,9 +1549,9 @@
         </div>
 
         <div class="sidebar-footer">
-            <a href="https://linkedin.com/in/nithin-santhosh" target="_blank" rel="noopener noreferrer" class="sidebar-icon-link" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-            <a href="mailto:nithinsanthosh012@gmail.com" class="sidebar-icon-link" title="Email"><i class="fas fa-envelope"></i></a>
-            <a href="tel:+917010273909" class="sidebar-icon-link" title="Phone"><i class="fas fa-phone-alt"></i></a>
+            <a href="https://linkedin.com/in/nithin-santhosh" target="_blank" rel="noopener noreferrer" class="sidebar-icon-link" title="LinkedIn" aria-label="LinkedIn Profile"><i class="fab fa-linkedin-in"></i></a>
+            <a href="mailto:nithinsanthosh012@gmail.com" class="sidebar-icon-link" title="Email" aria-label="Send Email"><i class="fas fa-envelope"></i></a>
+            <a href="tel:+917010273909" class="sidebar-icon-link" title="Phone" aria-label="Call Phone Number"><i class="fas fa-phone-alt"></i></a>
         </div>
     </aside>
 
@@ -1919,6 +2248,37 @@
 
     <!-- JAVASCRIPT CONTROLLERS -->
     <script>
+        // Mobile Drawer Toggle Controller
+        function toggleMobileMenu(forceState) {
+            const sidebar = document.getElementById('sidebar-navigation') || document.querySelector('.sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            const toggleBtn = document.getElementById('mobile-nav-toggle');
+            const icon = document.getElementById('hamburger-icon');
+
+            if (!sidebar) return;
+
+            const isCurrentlyOpen = sidebar.classList.contains('mobile-open');
+            const shouldOpen = (typeof forceState === 'boolean') ? forceState : !isCurrentlyOpen;
+
+            if (shouldOpen) {
+                sidebar.classList.add('mobile-open');
+                if (backdrop) backdrop.classList.add('active');
+                if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'true');
+                if (icon) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                }
+            } else {
+                sidebar.classList.remove('mobile-open');
+                if (backdrop) backdrop.classList.remove('active');
+                if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');
+                if (icon) {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            }
+        }
+
         // Modal Controllers
         function openModal(id) {
             const modal = document.getElementById(id);
@@ -1932,7 +2292,11 @@
             const modal = document.getElementById(id);
             if (modal) {
                 modal.classList.remove('active');
-                document.body.style.overflow = 'auto';
+                if (window.innerWidth <= 1024) {
+                    document.body.style.overflow = 'auto';
+                } else {
+                    document.body.style.overflow = 'hidden';
+                }
             }
         }
 
@@ -1945,7 +2309,12 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
-                document.body.style.overflow = 'auto';
+                toggleMobileMenu(false);
+                if (window.innerWidth <= 1024) {
+                    document.body.style.overflow = 'auto';
+                } else {
+                    document.body.style.overflow = 'hidden';
+                }
             }
         });
 
@@ -1969,6 +2338,7 @@
                 activeTarget.classList.add('active-segment');
                 const mainContent = document.querySelector('.main-content');
                 if (mainContent) mainContent.scrollTop = 0;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
 
             navLinks.forEach(link => {
@@ -1977,6 +2347,9 @@
                     link.classList.add('active');
                 }
             });
+
+            // Auto close mobile navigation drawer when selecting a segment
+            toggleMobileMenu(false);
 
             if (targetId === 'experience' && typeof triggerWaterTubeAnimation === 'function') {
                 setTimeout(triggerWaterTubeAnimation, 150);
