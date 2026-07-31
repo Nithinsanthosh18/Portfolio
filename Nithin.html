@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nithin Santhosh R · AI Engineer Portfolio</title>
+    <title>Nithin Santhosh R · AI & ML Engineer Portfolio</title>
     <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -324,22 +324,32 @@
             box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
         }
 
-        /* HERO SECTION WITH CYBERNETIC ORBIT PORTAL */
+        /* HERO SECTION WITH CYBERNETIC AVATAR PORTAL */
         .hero-section {
             min-height: 100vh;
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 3rem;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            scroll-snap-align: start;
+            text-align: center;
+            justify-content: center;
+            gap: 1rem;
             padding: 2rem 0;
         }
 
         .hero-kicker {
-            font-size: 1.05rem;
-            font-weight: 600;
+            font-size: 1.25rem;
+            font-weight: 700;
             color: var(--accent-purple);
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .hero-main-details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 760px;
+            width: 100%;
         }
 
         .hero-name {
@@ -1285,11 +1295,34 @@
             }
 
             .hero-section {
-                grid-template-columns: 1fr !important;
-                min-height: auto !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
                 text-align: center !important;
-                gap: 2.2rem !important;
+                gap: 1.2rem !important;
                 padding: 1.5rem 0 !important;
+                min-height: auto !important;
+            }
+
+            .hero-kicker {
+                order: 1 !important;
+                margin-bottom: 0.2rem !important;
+            }
+
+            .avatar-portal-wrap {
+                order: 2 !important;
+                grid-area: auto !important;
+                width: min(270px, 80vw) !important;
+                height: min(270px, 80vw) !important;
+                margin: 0.5rem auto 1rem auto !important;
+            }
+
+            .hero-main-details {
+                order: 3 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                width: 100% !important;
             }
 
             .hero-name {
@@ -1504,7 +1537,7 @@
             <div class="mobile-hex-logo">N</div>
             <div>
                 <div class="mobile-brand-title">Nithin Santhosh R</div>
-                <div class="mobile-brand-sub">AI Engineer & ML Specialist</div>
+                <div class="mobile-brand-sub">AI & ML Engineer</div>
             </div>
         </a>
         <button class="mobile-hamburger-btn" id="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="sidebar-navigation" onclick="toggleMobileMenu()">
@@ -1529,7 +1562,7 @@
             <div class="sidebar-header">
                 <div class="hexagon-logo">N</div>
                 <h3 class="sidebar-title">Nithin Santhosh R</h3>
-                <p class="sidebar-subtitle">AI Engineer & ML Specialist</p>
+                <p class="sidebar-subtitle">AI & ML Engineer</p>
             </div>
 
             <ul class="sidebar-menu">
@@ -1560,33 +1593,7 @@
 
         <!-- HERO SECTION WITH CYBERNETIC AVATAR PORTAL -->
         <section class="hero-section active-segment" id="home">
-            <div>
-                <p class="hero-kicker">Hello, I'm</p>
-                <h1 class="hero-name"><span class="name-gradient">Nithin Santhosh R</span></h1>
-                <div class="hero-role">AI Engineer | Full Stack & Automation Developer</div>
-                <p class="hero-desc">Building intelligent, scalable solutions for a better tomorrow. Specializing in computer vision models (YOLO, OpenCV), speech NLP architectures (BERT), and automated web data engines.</p>
-
-                <div class="hero-actions">
-                    <a href="#projects" class="btn-primary-purple">
-                        View My Work <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <button class="btn-outline-glass" onclick="openModal('resume-modal')">
-                        Resume Vault <i class="fas fa-eye"></i>
-                    </button>
-                </div>
-
-                <div class="scroll-down-hint">
-                    <i class="fas fa-mouse"></i> Scroll Down to Explore
-                </div>
-
-                <div class="tech-quote-box">
-                    <i class="fas fa-quote-left quote-icon"></i>
-                    <div class="quote-content">
-                        "Artificial Intelligence is not about replacing human wisdom; it is about amplifying human potential to build the impossible."
-                        <span class="quote-author">— Nithin Santhosh R · AI Engineering Paradigm</span>
-                    </div>
-                </div>
-            </div>
+            <p class="hero-kicker">Hello, I'm</p>
 
             <!-- Cybernetic Avatar Orbit Frame -->
             <div class="avatar-portal-wrap">
@@ -1606,6 +1613,29 @@
                 </div>
                 <div class="orbit-chip chip-bottom-right">
                     <i class="fas fa-bolt" style="color:var(--accent-emerald);"></i> Automation Dev
+                </div>
+            </div>
+
+            <div class="hero-main-details">
+                <h1 class="hero-name"><span class="name-gradient">Nithin Santhosh R</span></h1>
+                <div class="hero-role">AI Engineer | Full Stack & Automation Developer</div>
+                <p class="hero-desc">Building intelligent, scalable solutions for a better tomorrow. Specializing in computer vision models (YOLO, OpenCV), speech NLP architectures (BERT), and automated web data engines.</p>
+
+                <div class="hero-actions">
+                    <a href="#projects" class="btn-primary-purple">
+                        View My Work <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <button class="btn-outline-glass" onclick="openModal('resume-modal')">
+                        Resume Vault <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+
+                <div class="tech-quote-box">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <div class="quote-content">
+                        "Artificial Intelligence is not about replacing human wisdom; it is about amplifying human potential to build the impossible."
+                        <span class="quote-author">— Nithin Santhosh R · AI Engineering Paradigm</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1944,10 +1974,7 @@
         </section>
 
         <!-- FOOTER -->
-        <footer>
-            <div>© 2026 Nithin Santhosh R. All rights reserved.</div>
-            <div>Designed with ❤️ for AI & ML Innovation</div>
-        </footer>
+        <footer></footer>
 
     </main>
 
