@@ -1382,12 +1382,15 @@
             .chip-mid-left { top: 48% !important; left: -10px !important; }
             .chip-bottom-right { bottom: -8px !important; right: -8px !important; }
 
-            .section-panel {
+            .section-panel, .hero-section {
+                display: flex !important;
+                opacity: 1 !important;
                 min-height: auto !important;
-                padding: 1.2rem 1rem !important;
-                margin: 0 !important;
+                padding: 1.5rem 1.2rem !important;
+                margin: 1.5rem 0 !important;
                 border-radius: 20px !important;
                 justify-content: flex-start !important;
+                scroll-margin-top: 75px;
             }
 
             .section-heading {
@@ -2354,6 +2357,24 @@
         function showSegment(segmentId) {
             if (!segmentId) return;
             const targetId = segmentId.replace('#', '');
+
+            // On mobile devices (<= 1024px), smoothly scroll to the section for intuitive mobile UX
+            if (window.innerWidth <= 1024) {
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+                toggleMobileMenu(false);
+                if (history.replaceState) {
+                    history.replaceState(null, null, '#' + targetId);
+                }
+                if (targetId === 'experience' && typeof triggerWaterTubeAnimation === 'function') {
+                    setTimeout(triggerWaterTubeAnimation, 150);
+                }
+                return;
+            }
+
+            // Desktop Tab Switching Controller
             const allSegments = document.querySelectorAll('.section-panel, .hero-section');
             const navLinks = document.querySelectorAll('.sidebar-menu a[href^="#"]');
 
@@ -2364,12 +2385,8 @@
             const activeTarget = document.getElementById(targetId);
             if (activeTarget) {
                 activeTarget.classList.add('active-segment');
-                // Scroll to top on both desktop (mainContent) and mobile (window/body)
                 const mainContent = document.querySelector('.main-content');
                 if (mainContent) mainContent.scrollTop = 0;
-                document.documentElement.scrollTop = 0;
-                document.body.scrollTop = 0;
-                window.scrollTo(0, 0);
             }
 
             navLinks.forEach(link => {
@@ -2379,12 +2396,10 @@
                 }
             });
 
-            // Update URL hash without triggering browser scroll
             if (history.replaceState) {
                 history.replaceState(null, null, '#' + targetId);
             }
 
-            // Auto close mobile navigation drawer when selecting a segment
             toggleMobileMenu(false);
 
             if (targetId === 'experience' && typeof triggerWaterTubeAnimation === 'function') {
