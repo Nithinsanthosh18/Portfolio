@@ -1383,14 +1383,26 @@
             .chip-bottom-right { bottom: -8px !important; right: -8px !important; }
 
             .section-panel, .hero-section {
-                display: flex !important;
-                opacity: 1 !important;
+                display: none !important;
+                opacity: 0;
                 min-height: auto !important;
                 padding: 1.5rem 1.2rem !important;
-                margin: 1.5rem 0 !important;
+                margin: 0 !important;
                 border-radius: 20px !important;
                 justify-content: flex-start !important;
-                scroll-margin-top: 75px;
+            }
+
+            .section-panel.active-segment {
+                display: flex !important;
+                opacity: 1 !important;
+                animation: segmentFadeIn 0.35s ease forwards;
+            }
+
+            .hero-section.active-segment {
+                display: flex !important;
+                flex-direction: column !important;
+                opacity: 1 !important;
+                animation: segmentFadeIn 0.35s ease forwards;
             }
 
             .section-heading {
@@ -2353,28 +2365,10 @@
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.sidebar-menu a[href^="#"]');
 
-        // CLICK-ONLY SEGMENT SWITCHER CONTROLLER
+        // ONE SEGMENT PER PAGE CONTROLLER (DESKTOP & MOBILE)
         function showSegment(segmentId) {
             if (!segmentId) return;
             const targetId = segmentId.replace('#', '');
-
-            // On mobile devices (<= 1024px), smoothly scroll to the section for intuitive mobile UX
-            if (window.innerWidth <= 1024) {
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth' });
-                }
-                toggleMobileMenu(false);
-                if (history.replaceState) {
-                    history.replaceState(null, null, '#' + targetId);
-                }
-                if (targetId === 'experience' && typeof triggerWaterTubeAnimation === 'function') {
-                    setTimeout(triggerWaterTubeAnimation, 150);
-                }
-                return;
-            }
-
-            // Desktop Tab Switching Controller
             const allSegments = document.querySelectorAll('.section-panel, .hero-section');
             const navLinks = document.querySelectorAll('.sidebar-menu a[href^="#"]');
 
@@ -2385,8 +2379,13 @@
             const activeTarget = document.getElementById(targetId);
             if (activeTarget) {
                 activeTarget.classList.add('active-segment');
+                
+                // Reset scroll position to top on both desktop and mobile
                 const mainContent = document.querySelector('.main-content');
                 if (mainContent) mainContent.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+                window.scrollTo(0, 0);
             }
 
             navLinks.forEach(link => {
@@ -2400,6 +2399,7 @@
                 history.replaceState(null, null, '#' + targetId);
             }
 
+            // Close mobile menu drawer
             toggleMobileMenu(false);
 
             if (targetId === 'experience' && typeof triggerWaterTubeAnimation === 'function') {
