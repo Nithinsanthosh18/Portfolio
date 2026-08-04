@@ -1533,7 +1533,7 @@
 
     <!-- Mobile Top Header Bar -->
     <header class="mobile-header" aria-label="Mobile Navigation Header">
-        <a href="#home" class="mobile-brand" onclick="showSegment('home')" aria-label="Nithin Santhosh R Portfolio Home">
+        <a href="#home" class="mobile-brand" onclick="showSegment('home'); return false;" aria-label="Nithin Santhosh R Portfolio Home">
             <div class="mobile-hex-logo">N</div>
             <div>
                 <div class="mobile-brand-title">Nithin Santhosh R</div>
@@ -1566,13 +1566,13 @@
             </div>
 
             <ul class="sidebar-menu">
-                <li><a href="#home" class="active"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="#about"><i class="fas fa-user"></i> About</a></li>
-                <li><a href="#skills"><i class="fas fa-cogs"></i> Skills</a></li>
-                <li><a href="#projects"><i class="fas fa-rocket"></i> Projects</a></li>
-                <li><a href="#experience"><i class="fas fa-briefcase"></i> Experience</a></li>
-                <li><a href="#certificates"><i class="fas fa-award"></i> Certificates</a></li>
-                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                <li><a href="#home" class="active" onclick="showSegment('home'); return false;"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#about" onclick="showSegment('about'); return false;"><i class="fas fa-user"></i> About</a></li>
+                <li><a href="#skills" onclick="showSegment('skills'); return false;"><i class="fas fa-cogs"></i> Skills</a></li>
+                <li><a href="#projects" onclick="showSegment('projects'); return false;"><i class="fas fa-rocket"></i> Projects</a></li>
+                <li><a href="#experience" onclick="showSegment('experience'); return false;"><i class="fas fa-briefcase"></i> Experience</a></li>
+                <li><a href="#certificates" onclick="showSegment('certificates'); return false;"><i class="fas fa-award"></i> Certificates</a></li>
+                <li><a href="#contact" onclick="showSegment('contact'); return false;"><i class="fas fa-envelope"></i> Contact</a></li>
                 <li>
                     <a href="mailto:nithinsanthosh012@gmail.com" class="btn-hire-sidebar">
                         Hire Me <i class="fas fa-arrow-right"></i>
@@ -2363,9 +2363,12 @@
             const activeTarget = document.getElementById(targetId);
             if (activeTarget) {
                 activeTarget.classList.add('active-segment');
+                // Scroll to top on both desktop (mainContent) and mobile (window/body)
                 const mainContent = document.querySelector('.main-content');
                 if (mainContent) mainContent.scrollTop = 0;
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+                window.scrollTo(0, 0);
             }
 
             navLinks.forEach(link => {
@@ -2374,6 +2377,11 @@
                     link.classList.add('active');
                 }
             });
+
+            // Update URL hash without triggering browser scroll
+            if (history.replaceState) {
+                history.replaceState(null, null, '#' + targetId);
+            }
 
             // Auto close mobile navigation drawer when selecting a segment
             toggleMobileMenu(false);
@@ -2389,15 +2397,14 @@
             showSegment(initialHash);
         });
 
-        // Handle Segment Clicks
+        // Handle Segment Clicks (fallback for any anchor links without explicit onclick)
         document.addEventListener('click', (e) => {
             const link = e.target.closest('a[href^="#"]');
             if (link) {
                 const targetHash = link.getAttribute('href');
-                if (targetHash && targetHash.startsWith('#')) {
+                if (targetHash && targetHash.startsWith('#') && targetHash.length > 1) {
                     e.preventDefault();
                     showSegment(targetHash);
-                    history.pushState(null, null, targetHash);
                 }
             }
         });
